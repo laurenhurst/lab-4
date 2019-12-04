@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MSGT 503 Lab 4</title>
+	<h1>Mapping Live Data</h1>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js'></script>
+		<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css' rel='stylesheet'/>
+		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="fonts/stylesheet.css">
+		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
+	</head>
+
+	<body>
+		<h2>Map One: USGS Live Earthquake Recordings Near Tacoma, Washington</h2>
+		<div id='map' style='width: 90vw; height: 75vh; margin: auto'></div>
+			<p>Live earthquake data feed provided by the U.S. Geological Survey, focused on the area around Tacoma, Washington.</p>
+		<script>
+			mapboxgl.accessToken = 'pk.eyJ1IjoibG1odXJzdCIsImEiOiJjazJ3YWU3N3YwMGptM2NsYzJrc3g4dWdnIn0.o23P-xxOlIj-A8bk0KgBPQ';
+
+			var map = new mapboxgl.Map({
+			    container: 'map',
+			    style: 'mapbox://styles/lmhurst/ck3qiey3y0qtl1enqcqcbafig',
+			    center: [-122, 47.25],
+			    zoom: 8.5
+			});
+				map.on('load', function(){
+				map.addSource('earthquakes', {
+							"type": "geojson",
+							"data": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
+					});
+					map.addLayer({
+						"id":"earthquakes",
+						"type":"circle",
+						"source":"earthquakes"
+					});
+			});
+			map.on('click', 'earthquakes', function (e) {
+						var coordinates = e.features[0].geometry.coordinates;
+						var description = "<p>"+e.features[0].properties.title + "<p>More Information:</p><p>" + e.features[0].properties.url + "</p>";
+						new mapboxgl.Popup()
+										.setLngLat(coordinates)
+										.setHTML(description)
+										.addTo(map);
+			});
+			map.addControl(new mapboxgl.NavigationControl());
+	</script>
+		</br>
+			<h2>Map Two: Live Location of the Wander Drone</h2>
+		<div id='maptwo' style='width: 90vw; height: 75vh; margin: auto;'></div>
+		<p>Live data feed of the "Wander Drone" location provided by <a href="https://docs.mapbox.com/mapbox-gl-js/example/live-geojson/" target="blank">Mapbox</a>.</p>
+		<script>
+			mapboxgl.accessToken = 'pk.eyJ1IjoibG1odXJzdCIsImEiOiJjazJ3YWU3N3YwMGptM2NsYzJrc3g4dWdnIn0.o23P-xxOlIj-A8bk0KgBPQ';
+	var maptwo = new mapboxgl.Map({
+	container: 'maptwo',
+	style: 'mapbox://styles/lmhurst/ck3qs2si30i281cp76k1hzd9a',
+	center: [32.71, 0],
+	zoom: .75
+	});
+
+	var url = 'https://wanderdrone.appspot.com/';
+		maptwo.on('load', function () {
+		window.setInterval(function() {
+		map.getSource('drone').setData(url);
+		}, 2000);
+
+	maptwo.addSource('drone', { type: 'geojson', data: url });
+	maptwo.addLayer({
+		"id": "drone",
+		"type": "symbol",
+		"source": "drone",
+		"layout": {
+		"icon-image": "rocket-15",
+		"icon-size": 2
+	}
+	});
+	map.on('click', 'drone', function (e) {
+				var coordinates = e.features[0].geometry.coordinates;
+				var description = "<p>Hello World!</p>";
+				new mapboxgl.Popup()
+								.setLngLat(coordinates)
+								.setHTML(description)
+								.addTo(map);
+	});
+	});
+		maptwo.addControl(new mapboxgl.NavigationControl());
+	</script>
+	</body>
+</html>

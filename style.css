@@ -1,0 +1,33 @@
+h1 {
+  font-family: 'bebas_neuebold';
+  src: url('bebasneue-bold-webfont.woff2') format('woff2'),
+       url('bebasneue-bold-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-size: 6vw;
+  text-align: center;
+}
+h2 {
+  font-family: 'bebas_neuebold';
+  src: url('bebasneue-bold-webfont.woff2') format('woff2'),
+       url('bebasneue-bold-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-size: 3vw;
+  width: 90vw;
+  margin: auto;
+}
+p {
+  font-family: 'bebas_neueregular';
+  src: url('bebasneue-regular-webfont.woff2') format('woff2'),
+       url('bebasneue-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1.7vw;
+  width: 90vw;
+  margin: auto;
+}
+body {
+  background-color: lightblue;
+}
+#mapid { height: 180px; }
